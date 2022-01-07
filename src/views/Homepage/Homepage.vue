@@ -15,7 +15,7 @@
           v-model="inputValues.name"
         />
         <div class="invalid-feedback">
-          Please enter your name. Name can only contain letters A-z.
+          Please enter your name. Name can't contain numbers.
         </div>
         <div id="nameValidationFeedback" class="valid-feedback">
           Looks good!
@@ -27,7 +27,7 @@
           :class="inputValidityClass.test"
           aria-label="Select"
           aria-describedby="selectValidationFeedback"
-          v-model="inputValues.testId"
+          v-model="inputValues.id"
         >
           <option value="" selected hidden disabled>Please choose test</option>
           <option
@@ -53,20 +53,16 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import axios from "axios";
-
-export type QuizOptions = {
-  id: string;
-  title: string;
-};
+import { Quiz } from "@/pages/Quiz.vue";
 
 export default defineComponent({
   name: "Homepage",
   data: () => ({
     loading: true,
-    quizOptions: [] as QuizOptions[],
+    quizOptions: [] as Quiz[],
     inputValues: {
       name: "",
-      testId: "",
+      id: "",
     },
     inputValidityClass: {
       name: "",
@@ -90,14 +86,14 @@ export default defineComponent({
     submitForm() {
       let validity = true;
 
-      if (!this.inputValues.name || !/^[A-z]+$/.test(this.inputValues.name)) {
+      if (!this.inputValues.name || /\d/g.test(this.inputValues.name)) {
         this.inputValidityClass.name = "is-invalid";
         validity = false;
       } else {
         this.inputValidityClass.name = "is-valid";
       }
 
-      if (!this.inputValues.testId) {
+      if (!this.inputValues.id) {
         this.inputValidityClass.test = "is-invalid";
         validity = false;
       } else {
@@ -108,7 +104,7 @@ export default defineComponent({
         this.$emit("onSubmit", this.inputValues);
         this.inputValues = {
           name: "",
-          testId: "",
+          id: "",
         };
       }
     },
