@@ -7,3 +7,19 @@
 .quiz-answer-label {
   width: 100%;
 }
+
+.progress-bar-outer {
+  width: 100%;
+  border-radius: 4px;
+  background-color: #eeeeee;
+}
+
+.progress-bar-inner {
+  padding: 2px;
+  min-height: 24px;
+  border-radius: 4px;
+  background-color: #04AA6D;
+  text-align: center;
+  color: #fff;
+  transition: width 1s ease-in-out;
+}

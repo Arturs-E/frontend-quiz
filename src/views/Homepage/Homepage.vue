@@ -22,10 +22,12 @@
         </div>
       </div>
       <div>
+        <label for="test" class="form-label">Name</label>
         <select
           class="form-select"
           :class="inputValidityClass.test"
-          aria-label="Select"
+          id="test"
+          aria-label="test"
           aria-describedby="selectValidationFeedback"
           v-model="inputValues.quizId"
         >

@@ -24,8 +24,26 @@
           </label>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary">Next</button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        :style="selectedAnswer ? '' : { opacity: 0.4 }"
+      >
+        Next
+      </button>
     </form>
+    <div class="progress-bar-outer">
+      <div
+        class="progress-bar-inner"
+        :style="{ width: `${getProgressBarCompleteness()}%` }"
+      >
+        {{
+          getProgressBarCompleteness() > 0
+            ? `${getProgressBarCompleteness()}%`
+            : ""
+        }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -84,6 +102,9 @@ export default defineComponent({
   },
   methods: {
     submitHandler() {
+      if (!this.selectedAnswer) {
+        return;
+      }
       this.$emit("onSubmitAnswerHandler", this.selectedAnswer);
 
       if (this.activeQuestionIndex + 1 === this.numberOfQuestions) {
@@ -92,6 +113,15 @@ export default defineComponent({
       }
 
       this.activeQuestionIndex++;
+      this.selectedAnswer = "";
+    },
+    getProgressBarCompleteness() {
+      console.log(
+        Math.round((this.activeQuestionIndex / this.numberOfQuestions) * 100)
+      );
+      return Math.round(
+        (this.activeQuestionIndex / this.numberOfQuestions) * 100
+      );
     },
   },
 });

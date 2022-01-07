@@ -8,7 +8,12 @@
         @onSubmitAnswerHandler="saveQuestionAnswer"
         @onLastQuestion="goToResults"
       />
-      <Results v-else :formValues="formValues" :answers="questionAnswers" />
+      <Results
+        v-else
+        :formValues="formValues"
+        :answers="questionAnswers"
+        @onClick="retakeQuiuz"
+      />
     </div>
   </div>
 </template>
@@ -46,6 +51,10 @@ export default defineComponent({
     },
     goToResults() {
       this.activeView = "results";
+    },
+    retakeQuiuz() {
+      this.activeView = "homepage";
+      this.questionAnswers = [];
     },
   },
 });

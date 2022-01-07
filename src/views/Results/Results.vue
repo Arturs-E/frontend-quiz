@@ -6,6 +6,7 @@
         `You answered correctly to ${quizResults.correct} out of ${quizResults.total} questions.`
       }}
     </span>
+    <button type="button" class="btn btn-primary" @click="this.$emit('onClick')">Re-take</button>
   </div>
 </template>
 
@@ -21,6 +22,7 @@ type QuizResults = {
 
 export default defineComponent({
   name: "Results",
+  emits: ["onClick"],
   props: {
     formValues: Object as PropType<FormValues>,
     answers: Array as PropType<string[]>,
