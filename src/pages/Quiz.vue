@@ -2,15 +2,22 @@
   <div class="content-container">
     <div class="content-wrapper">
       <Homepage v-if="activeView === 'homepage'" @onSubmit="setFormValues" />
-      <QuizView v-else-if="activeView === 'quiz'" :quizId="formValues.id" />
+      <QuizView
+        v-else-if="activeView === 'quiz'"
+        :quizId="formValues.quizId"
+        @onSubmitAnswerHandler="saveQuestionAnswer"
+        @onLastQuestion="goToResults"
+      />
+      <Results v-else :formValues="formValues" :answers="questionAnswers" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Homepage from "@/views/Homepage/Homepage.vue";
+import Homepage, { FormValues } from "@/views/Homepage/Homepage.vue";
 import QuizView from "@/views/QuizView/QuizView.vue";
+import Results from "@/views/Results/Results.vue";
 
 export type Quiz = {
   id: string;
@@ -22,16 +29,23 @@ export default defineComponent({
   components: {
     QuizView,
     Homepage,
+    Results,
   },
   data: () => ({
     activeView: "homepage" as "homepage" | "quiz" | "results",
-    formValues: {} as Quiz,
+    formValues: {} as FormValues,
+    questionAnswers: [] as string[],
   }),
   methods: {
-    setFormValues(values: Quiz) {
+    setFormValues(values: FormValues) {
       this.formValues = values;
-      console.log(this.formValues);
       this.activeView = "quiz";
+    },
+    saveQuestionAnswer(value: string) {
+      this.questionAnswers.push(value);
+    },
+    goToResults() {
+      this.activeView = "results";
     },
   },
 });

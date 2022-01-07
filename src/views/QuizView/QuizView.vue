@@ -1,15 +1,31 @@
 <template>
   <div v-if="!loading">
     <h2>{{ quizQuestions[activeQuestionIndex].title }}</h2>
-    <ul>
-      <li
-        v-for="answer of activeQuestionAnswers"
-        :key="answer.id"
-        :value="answer.id"
-      >
-        {{ answer.title }}
-      </li>
-    </ul>
+    <form @submit.prevent="submitHandler">
+      <div class="answer-container">
+        <div
+          class="answer-wrapper"
+          v-for="answer of activeQuestionAnswers"
+          :key="answer.id"
+        >
+          <input
+            type="radio"
+            name="answers"
+            class="btn-check"
+            :id="answer.id"
+            :value="answer.id"
+            v-model="selectedAnswer"
+          />
+          <label
+            class="btn btn-outline-secondary quiz-answer-label"
+            :for="answer.id"
+          >
+            {{ answer.title }}
+          </label>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Next</button>
+    </form>
   </div>
 </template>
 
@@ -21,11 +37,13 @@ import { Quiz } from "@/pages/Quiz.vue";
 export default defineComponent({
   name: "QuizView",
   props: ["quizId"],
+  emits: ["onSubmitAnswerHandler", "onLastQuestion"],
   data: () => ({
     loading: true,
     quizQuestions: [] as Quiz[],
     activeQuestionIndex: 0,
     activeQuestionAnswers: [] as Quiz[],
+    selectedAnswer: "",
   }),
   async created() {
     await axios
@@ -62,6 +80,18 @@ export default defineComponent({
           this.activeQuestionAnswers = data;
           this.loading = false;
         });
+    },
+  },
+  methods: {
+    submitHandler() {
+      this.$emit("onSubmitAnswerHandler", this.selectedAnswer);
+
+      if (this.activeQuestionIndex + 1 === this.numberOfQuestions) {
+        this.$emit("onLastQuestion");
+        return;
+      }
+
+      this.activeQuestionIndex++;
     },
   },
 });

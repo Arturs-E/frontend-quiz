@@ -27,7 +27,7 @@
           :class="inputValidityClass.test"
           aria-label="Select"
           aria-describedby="selectValidationFeedback"
-          v-model="inputValues.id"
+          v-model="inputValues.quizId"
         >
           <option value="" selected hidden disabled>Please choose test</option>
           <option
@@ -55,6 +55,11 @@ import { defineComponent } from "vue";
 import axios from "axios";
 import { Quiz } from "@/pages/Quiz.vue";
 
+export type FormValues = {
+  name: string;
+  quizId: string;
+};
+
 export default defineComponent({
   name: "Homepage",
   data: () => ({
@@ -62,8 +67,8 @@ export default defineComponent({
     quizOptions: [] as Quiz[],
     inputValues: {
       name: "",
-      id: "",
-    },
+      quizId: "",
+    } as FormValues,
     inputValidityClass: {
       name: "",
       test: "",
@@ -93,7 +98,7 @@ export default defineComponent({
         this.inputValidityClass.name = "is-valid";
       }
 
-      if (!this.inputValues.id) {
+      if (!this.inputValues.quizId) {
         this.inputValidityClass.test = "is-invalid";
         validity = false;
       } else {
@@ -104,7 +109,7 @@ export default defineComponent({
         this.$emit("onSubmit", this.inputValues);
         this.inputValues = {
           name: "",
-          id: "",
+          quizId: "",
         };
       }
     },
