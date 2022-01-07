@@ -1,0 +1,15 @@
+.form {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 56px;
+
+  &__input-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 24px;
+  }
+
+  &__submit-wrapper {
+    justify-self: center;
+  }
+}
