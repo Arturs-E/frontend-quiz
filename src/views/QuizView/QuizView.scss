@@ -2,6 +2,16 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   grid-gap: 16px;
+  animation: showAnswers 0.35s ease-in;
+}
+
+.answer-container-wrapper {
+  min-height: 200px;
+}
+
+@keyframes showAnswers {
+  from {opacity: 0}
+  to {opacity: 1}
 }
 
 .quiz-answer-label {

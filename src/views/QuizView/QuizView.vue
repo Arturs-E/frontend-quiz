@@ -1,27 +1,29 @@
 <template>
-  <div v-if="!loading">
-    <h2>{{ quizQuestions[activeQuestionIndex].title }}</h2>
+  <div>
+    <h2 class="mb-3">{{ quizQuestions[activeQuestionIndex]?.title }}</h2>
     <form @submit.prevent="submitHandler">
-      <div class="answer-container">
-        <div
-          class="answer-wrapper"
-          v-for="answer of activeQuestionAnswers"
-          :key="answer.id"
-        >
-          <input
-            type="radio"
-            name="answers"
-            class="btn-check"
-            :id="answer.id"
-            :value="answer.id"
-            v-model="selectedAnswer"
-          />
-          <label
-            class="btn btn-outline-secondary quiz-answer-label"
-            :for="answer.id"
+      <div class="answer-container-wrapper">
+        <div class="answer-container" v-if="!loading">
+          <div
+            class="answer-wrapper"
+            v-for="answer of activeQuestionAnswers"
+            :key="answer.id"
           >
-            {{ answer.title }}
-          </label>
+            <input
+              type="radio"
+              name="answers"
+              class="btn-check"
+              :id="answer.id"
+              :value="answer.id"
+              v-model="selectedAnswer"
+            />
+            <label
+              class="btn btn-outline-secondary quiz-answer-label"
+              :for="answer.id"
+            >
+              {{ answer.title }}
+            </label>
+          </div>
         </div>
       </div>
       <button
@@ -37,11 +39,7 @@
         class="progress-bar-inner"
         :style="{ width: `${getProgressBarCompleteness()}%` }"
       >
-        {{
-          getProgressBarCompleteness() > 0
-            ? `${getProgressBarCompleteness()}%`
-            : ""
-        }}
+        {{ `${activeQuestionIndex + 1} / ${numberOfQuestions}` }}
       </div>
     </div>
   </div>
@@ -65,21 +63,16 @@ export default defineComponent({
   }),
   async created() {
     await axios
-      .get(
-        `https://printful.com/test-quiz.php?action=questions&quizId=${this.quizId}`
-      )
+      .get("", {
+        params: {
+          action: "questions",
+          quizId: this.quizId,
+        },
+      })
       .then(({ data }) => {
         this.quizQuestions = data;
       });
-    const questionId = this.quizQuestions[this.activeQuestionIndex].id;
-    axios
-      .get(
-        `https://printful.com/test-quiz.php?action=answers&quizId=${this.quizId}&questionId=${questionId}`
-      )
-      .then(({ data }) => {
-        this.activeQuestionAnswers = data;
-        this.loading = false;
-      });
+    this.getAnswers();
   },
   computed: {
     numberOfQuestions() {
@@ -89,18 +82,25 @@ export default defineComponent({
   watch: {
     activeQuestionIndex() {
       this.loading = true;
+      this.getAnswers();
+    },
+  },
+  methods: {
+    getAnswers() {
       const questionId = this.quizQuestions[this.activeQuestionIndex].id;
       axios
-        .get(
-          `https://printful.com/test-quiz.php?action=answers&quizId=${this.quizId}&questionId=${questionId}`
-        )
+        .get("", {
+          params: {
+            action: "answers",
+            quizId: this.quizId,
+            questionId,
+          },
+        })
         .then(({ data }) => {
           this.activeQuestionAnswers = data;
           this.loading = false;
         });
     },
-  },
-  methods: {
     submitHandler() {
       if (!this.selectedAnswer) {
         return;
@@ -116,11 +116,8 @@ export default defineComponent({
       this.selectedAnswer = "";
     },
     getProgressBarCompleteness() {
-      console.log(
-        Math.round((this.activeQuestionIndex / this.numberOfQuestions) * 100)
-      );
       return Math.round(
-        (this.activeQuestionIndex / this.numberOfQuestions) * 100
+        ((this.activeQuestionIndex + 1) / this.numberOfQuestions) * 100
       );
     },
   },

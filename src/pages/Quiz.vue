@@ -12,7 +12,7 @@
         v-else
         :formValues="formValues"
         :answers="questionAnswers"
-        @onClick="retakeQuiuz"
+        @onClick="retakeQuiz"
       />
     </div>
   </div>
@@ -23,6 +23,9 @@ import { defineComponent } from "vue";
 import Homepage, { FormValues } from "@/views/Homepage/Homepage.vue";
 import QuizView from "@/views/QuizView/QuizView.vue";
 import Results from "@/views/Results/Results.vue";
+import axios from "axios";
+
+axios.defaults.baseURL = "https://printful.com/test-quiz.php";
 
 export type Quiz = {
   id: string;
@@ -43,7 +46,10 @@ export default defineComponent({
   }),
   methods: {
     setFormValues(values: FormValues) {
-      this.formValues = values;
+      this.formValues = {
+        name: values.name.toLowerCase(),
+        quizId: values.quizId,
+      };
       this.activeView = "quiz";
     },
     saveQuestionAnswer(value: string) {
@@ -52,7 +58,7 @@ export default defineComponent({
     goToResults() {
       this.activeView = "results";
     },
-    retakeQuiuz() {
+    retakeQuiz() {
       this.activeView = "homepage";
       this.questionAnswers = [];
     },

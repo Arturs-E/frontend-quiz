@@ -3,7 +3,7 @@
   <form class="form" novalidate @submit.prevent="submitForm">
     <div class="form__input-wrapper">
       <div>
-        <label for="name" class="form-label">Name</label>
+        <label for="name" class="form-label form-label--bold">Name</label>
         <input
           type="text"
           class="form-control"
@@ -12,7 +12,7 @@
           placeholder="Please enter your name"
           aria-describedby="nameValidationFeedback"
           ref="nameRef"
-          v-model="inputValues.name"
+          v-model.trim="formValues.name"
         />
         <div class="invalid-feedback">
           Please enter your name. Name can't contain numbers.
@@ -22,14 +22,14 @@
         </div>
       </div>
       <div>
-        <label for="test" class="form-label">Name</label>
+        <label for="test" class="form-label form-label--bold">Test</label>
         <select
           class="form-select"
           :class="inputValidityClass.test"
           id="test"
           aria-label="test"
           aria-describedby="selectValidationFeedback"
-          v-model="inputValues.quizId"
+          v-model="formValues.quizId"
         >
           <option value="" selected hidden disabled>Please choose test</option>
           <option
@@ -67,7 +67,7 @@ export default defineComponent({
   data: () => ({
     loading: true,
     quizOptions: [] as Quiz[],
-    inputValues: {
+    formValues: {
       name: "",
       quizId: "",
     } as FormValues,
@@ -79,7 +79,11 @@ export default defineComponent({
   emits: ["onSubmit"],
   created() {
     axios
-      .get("https://printful.com/test-quiz.php?action=quizzes")
+      .get("", {
+        params: {
+          action: "quizzes",
+        },
+      })
       .then(({ data }) => {
         this.quizOptions = data;
         this.loading = false;
@@ -93,14 +97,14 @@ export default defineComponent({
     submitForm() {
       let validity = true;
 
-      if (!this.inputValues.name || /\d/g.test(this.inputValues.name)) {
+      if (!this.formValues.name || /\d/g.test(this.formValues.name)) {
         this.inputValidityClass.name = "is-invalid";
         validity = false;
       } else {
         this.inputValidityClass.name = "is-valid";
       }
 
-      if (!this.inputValues.quizId) {
+      if (!this.formValues.quizId) {
         this.inputValidityClass.test = "is-invalid";
         validity = false;
       } else {
@@ -108,8 +112,8 @@ export default defineComponent({
       }
 
       if (validity) {
-        this.$emit("onSubmit", this.inputValues);
-        this.inputValues = {
+        this.$emit("onSubmit", this.formValues);
+        this.formValues = {
           name: "",
           quizId: "",
         };

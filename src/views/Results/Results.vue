@@ -1,12 +1,20 @@
 <template>
-  <div v-if="!loading">
-    <h2>{{ `Thanks, ${formValues.name}!` }}</h2>
-    <span>
+  <div v-if="!loading" class="results">
+    <h2 style="text-transform: capitalize">
+      {{ `Thanks, ${formValues.name}!` }}
+    </h2>
+    <span class="mb-4">
       {{
         `You answered correctly to ${quizResults.correct} out of ${quizResults.total} questions.`
       }}
     </span>
-    <button type="button" class="btn btn-primary" @click="this.$emit('onClick')">Re-take</button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      @click="this.$emit('onClick')"
+    >
+      Re-take
+    </button>
   </div>
 </template>
 
@@ -24,20 +32,28 @@ export default defineComponent({
   name: "Results",
   emits: ["onClick"],
   props: {
-    formValues: Object as PropType<FormValues>,
-    answers: Array as PropType<string[]>,
+    formValues: {
+      type: Object as PropType<FormValues>,
+      required: true,
+    },
+    answers: {
+      type: Array as PropType<string[]>,
+      required: true,
+    },
   },
   data: () => ({
     loading: true,
     quizResults: {} as QuizResults,
   }),
   created() {
-    const quizId = this.formValues?.quizId;
-    const answers = `&answers[]=${this.answers?.join("&answers[]=")}`;
     axios
-      .get(
-        `https://printful.com/test-quiz.php?action=submit&quizId=${quizId}${answers}`
-      )
+      .get("", {
+        params: {
+          action: "submit",
+          quizId: this.formValues.quizId,
+          answers: this.answers,
+        },
+      })
       .then(({ data }) => {
         this.quizResults = data;
         this.loading = false;
