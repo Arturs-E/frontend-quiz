@@ -1,45 +1,33 @@
 <template>
   <div>
-    <h2 class="mb-3">{{ quizQuestions[activeQuestionIndex]?.title }}</h2>
-    <form @submit.prevent="submitHandler">
+    <h3 class="mb-3">{{ getQuestion() }}</h3>
+    <form @submit.prevent="submitAnswer" class="quiz">
       <div class="answer-container-wrapper">
         <div class="answer-container" v-if="!loading">
-          <div
-            class="answer-wrapper"
+          <QuizAnswer
             v-for="answer of activeQuestionAnswers"
             :key="answer.id"
-          >
-            <input
-              type="radio"
-              name="answers"
-              class="btn-check"
-              :id="answer.id"
-              :value="answer.id"
-              v-model="selectedAnswer"
-            />
-            <label
-              class="btn btn-outline-secondary quiz-answer-label"
-              :for="answer.id"
-            >
-              {{ answer.title }}
-            </label>
-          </div>
+            :id="answer.id"
+            :title="answer.title"
+            @update:model-value="selectedAnswer = $event"
+          />
         </div>
       </div>
       <button
         type="submit"
         class="btn btn-primary"
         :style="selectedAnswer ? '' : { opacity: 0.4 }"
+        :disabled="!selectedAnswer"
       >
-        Next
+        {{ checkIfLastQuestion() ? "Submit" : "Next" }}
       </button>
     </form>
-    <div class="progress-bar-outer">
+    <div v-if="numberOfQuestions" class="progress-bar-outer">
       <div
         class="progress-bar-inner"
         :style="{ width: `${getProgressBarCompleteness()}%` }"
       >
-        {{ `${activeQuestionIndex + 1} / ${numberOfQuestions}` }}
+        {{ getProgressBarContent() }}
       </div>
     </div>
   </div>
@@ -49,9 +37,13 @@
 import { defineComponent } from "vue";
 import axios from "axios";
 import { Quiz } from "@/pages/Quiz.vue";
+import QuizAnswer from "@/components/quiz-answer/QuizAnswer.vue";
 
 export default defineComponent({
   name: "QuizView",
+  components: {
+    QuizAnswer,
+  },
   props: ["quizId"],
   emits: ["onSubmitAnswerHandler", "onLastQuestion"],
   data: () => ({
@@ -86,6 +78,9 @@ export default defineComponent({
     },
   },
   methods: {
+    getQuestion() {
+      return this.quizQuestions[this.activeQuestionIndex]?.title;
+    },
     getAnswers() {
       const questionId = this.quizQuestions[this.activeQuestionIndex].id;
       axios
@@ -101,7 +96,7 @@ export default defineComponent({
           this.loading = false;
         });
     },
-    submitHandler() {
+    submitAnswer() {
       if (!this.selectedAnswer) {
         return;
       }
@@ -119,6 +114,12 @@ export default defineComponent({
       return Math.round(
         ((this.activeQuestionIndex + 1) / this.numberOfQuestions) * 100
       );
+    },
+    getProgressBarContent() {
+      return `${this.activeQuestionIndex + 1} / ${this.numberOfQuestions}`;
+    },
+    checkIfLastQuestion() {
+      return this.activeQuestionIndex + 1 === this.numberOfQuestions;
     },
   },
 });

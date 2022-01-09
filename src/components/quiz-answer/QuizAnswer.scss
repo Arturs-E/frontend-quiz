@@ -1,0 +1,27 @@
+.quiz {
+  &__answer-input {
+    display: none;
+
+    &:checked + .quiz__answer-label {
+      color: var(--blue);
+      background-color: var(--yellow);
+    }
+  }
+
+  &__answer-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 40px;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--yellow);
+    background-color: var(--blue);
+    border-radius: 4px;
+    cursor: pointer;
+  }
+}
+
+
+
+

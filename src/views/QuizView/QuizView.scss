@@ -1,12 +1,23 @@
+.quiz {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 32px;
+  margin-bottom: 48px;
+
+  & button {
+    justify-self: center;
+  }
+}
+
 .answer-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: 1fr;
   grid-gap: 16px;
   animation: showAnswers 0.35s ease-in;
 }
 
 .answer-container-wrapper {
-  min-height: 200px;
+  min-height: 136px;
 }
 
 @keyframes showAnswers {
@@ -25,11 +36,17 @@
 }
 
 .progress-bar-inner {
-  padding: 2px;
-  min-height: 24px;
+  font-size: 14px;
+  padding: 1px;
   border-radius: 4px;
   background-color: #04AA6D;
   text-align: center;
   color: #fff;
   transition: width 1s ease-in-out;
+}
+
+@media (min-width: 576px) {
+  .answer-container {
+    grid-template-columns: 1fr 1fr;
+  }
 }

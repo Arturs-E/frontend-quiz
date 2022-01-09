@@ -33,7 +33,7 @@
         >
           <option value="" selected hidden disabled>Please choose test</option>
           <option
-            v-for="option of quizOptions"
+            v-for="option of selectOptions"
             :value="option.id"
             :key="option.id"
           >
@@ -66,7 +66,7 @@ export default defineComponent({
   name: "Homepage",
   data: () => ({
     loading: true,
-    quizOptions: [] as Quiz[],
+    selectOptions: [] as Quiz[],
     formValues: {
       name: "",
       quizId: "",
@@ -85,7 +85,7 @@ export default defineComponent({
         },
       })
       .then(({ data }) => {
-        this.quizOptions = data;
+        this.selectOptions = data;
         this.loading = false;
       });
   },

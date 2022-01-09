@@ -13,7 +13,7 @@
       class="btn btn-primary"
       @click="this.$emit('onClick')"
     >
-      Re-take
+      Re-take Quiz
     </button>
   </div>
 </template>
