@@ -1,21 +1,40 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+@import "assets/styles/css-reset";
 
 :root {
-  --green: #03cea4;
-  --blue: #345995;
-  --yellow: #eac435;
-  --orange: #fb4d3d;
-  --red: #ca1551;
+  --blue: #438aba;
+  --green: #42b983;
 }
 
 #app {
-  //font-family: "Inter", sans-serif;
   font-family: 'Roboto', sans-serif;
   color: #444;
   margin-top: 20px;
 }
 
-* {
-  box-sizing: border-box;
+h1 {
+  font-size: 44px;
+  font-weight: bold;
 }
+
+h2 {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+h4 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+h5 {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+

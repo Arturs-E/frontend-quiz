@@ -3,8 +3,8 @@
     display: none;
 
     &:checked + .quiz__answer-label {
-      color: var(--blue);
-      background-color: var(--yellow);
+      color: #fff;
+      background-color: var(--green);
     }
   }
 
@@ -12,10 +12,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 15px 40px;
-    font-size: 20px;
+    padding: 14px 40px;
+    font-size: 18px;
     font-weight: 600;
-    color: var(--yellow);
+    color: #fff;
     background-color: var(--blue);
     border-radius: 4px;
     cursor: pointer;
