@@ -25,7 +25,8 @@
             </div>
           </div>
         </div>
-        <div class="form__field-wrapper">
+        <FetchingError v-if="fetchingError" />
+        <div v-else class="form__field-wrapper">
           <label for="test" class="form__label">Test</label>
           <div class="form__select-wrapper">
             <select
@@ -73,6 +74,7 @@ import useVuelidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 import { Quiz } from "@/pages/Quiz.vue";
 import Button from "@/components/buttons/Button.vue";
+import FetchingError from "@/components/fetching-error/FetchingError.vue";
 
 export type FormValues = {
   name: string;
@@ -83,9 +85,11 @@ export default defineComponent({
   name: "QuizForm",
   components: {
     Button,
+    FetchingError,
   },
   data: () => ({
     v$: useVuelidate(),
+    fetchingError: false,
     loading: true,
     selectOptions: [] as Quiz[],
     formValues: {
@@ -104,6 +108,11 @@ export default defineComponent({
       .then(({ data }) => {
         this.selectOptions = data;
         this.loading = false;
+      })
+      .catch((error) => {
+        if (error) {
+          this.fetchingError = true;
+        }
       });
   },
   mounted() {

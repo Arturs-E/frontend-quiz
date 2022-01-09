@@ -3,8 +3,9 @@
     <h3 class="quiz-question">{{ getQuestion() }}</h3>
     <form @submit.prevent="submitAnswer" class="quiz">
       <div class="answer-container-wrapper">
-        <Loader v-if="loading" />
-        <div class="answer-container" v-else>
+        <FetchingError v-if="fetchingError" />
+        <Loader v-else-if="loading" />
+        <div v-else class="answer-container">
           <QuizAnswer
             v-for="answer of activeQuestionAnswers"
             :key="answer.id"
@@ -34,6 +35,7 @@ import QuizAnswer from "@/components/quiz-answer/QuizAnswer.vue";
 import Button from "@/components/buttons/Button.vue";
 import ProgressBar from "@/components/progress-bar/ProgressBar.vue";
 import Loader from "@/components/loader/Loader.vue";
+import FetchingError from "@/components/fetching-error/FetchingError.vue";
 
 export default defineComponent({
   name: "QuizTest",
@@ -42,10 +44,12 @@ export default defineComponent({
     Button,
     ProgressBar,
     Loader,
+    FetchingError,
   },
   props: ["quizId"],
   emits: ["onSubmitAnswerHandler", "onLastQuestion"],
   data: () => ({
+    fetchingError: false,
     loading: true,
     quizQuestions: [] as Quiz[],
     activeQuestionIndex: 0,
@@ -62,7 +66,16 @@ export default defineComponent({
       })
       .then(({ data }) => {
         this.quizQuestions = data;
+      })
+      .catch((error) => {
+        if (error) {
+          this.fetchingError = true;
+        }
       });
+
+    if (this.fetchingError) {
+      return;
+    }
     this.getAnswers();
   },
   computed: {
@@ -93,6 +106,11 @@ export default defineComponent({
         .then(({ data }) => {
           this.activeQuestionAnswers = data;
           this.loading = false;
+        })
+        .catch((error) => {
+          if (error) {
+            this.fetchingError = true;
+          }
         });
     },
     submitAnswer() {

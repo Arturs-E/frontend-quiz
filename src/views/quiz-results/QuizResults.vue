@@ -1,5 +1,7 @@
 <template>
-  <div v-if="!loading" class="results">
+  <FetchingError v-if="fetchingError" />
+  <Loader v-else-if="loading" />
+  <div v-else class="results">
     <h2 style="text-transform: capitalize">
       {{ `Thanks, ${formValues.name}!` }}
     </h2>
@@ -19,6 +21,8 @@ import { defineComponent, PropType } from "vue";
 import axios from "axios";
 import Button from "@/components/buttons/Button.vue";
 import { FormValues } from "@/views/quiz-form/QuizForm.vue";
+import Loader from "@/components/loader/Loader.vue";
+import FetchingError from "@/components/fetching-error/FetchingError.vue";
 
 type QuizResults = {
   correct: number;
@@ -29,8 +33,9 @@ export default defineComponent({
   name: "QuizResults",
   components: {
     Button,
+    Loader,
+    FetchingError,
   },
-
   emits: ["onClick"],
   props: {
     formValues: {
@@ -43,6 +48,7 @@ export default defineComponent({
     },
   },
   data: () => ({
+    fetchingError: false,
     loading: true,
     quizResults: {} as QuizResults,
   }),
@@ -58,6 +64,11 @@ export default defineComponent({
       .then(({ data }) => {
         this.quizResults = data;
         this.loading = false;
+      })
+      .catch((error) => {
+        if (error) {
+          this.fetchingError = true;
+        }
       });
   },
 });
