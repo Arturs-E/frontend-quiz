@@ -11,7 +11,7 @@ You can see a working project here - https://arturs-e.github.io/frontend-quiz/
 1. File arrangement:
    - The entry point for all quiz related components is Quiz.vue
    - The 3 quiz views - form, test, results - are separated into different components
-   - Shared components, e.g. button, progress bar, loader, test answer, are separate components
+   - Shared components, e.g. button, progress bar, loader, test answer, headings, form fields are separate components
    - This could be improved further by separating form fields, etc.
 2. Quiz component:
    - The parent Quiz component holds state for which view to render, 
@@ -21,7 +21,7 @@ You can see a working project here - https://arturs-e.github.io/frontend-quiz/
    - On component render the name input field is focused
    - Test options are fetched from API using AXIOS
 4. QuizTest component:
-   - Holds state for all chose test questions, active question index, 
+   - Holds state for all chosen test questions, active question index, 
    active question answers and selected answer
    - All questions are fetched on initial render
    - Answers are fetched for each question separately
