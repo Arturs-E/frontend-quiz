@@ -1,40 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 @import "assets/styles/css-reset";
 
 :root {
-  --blue: #438aba;
-  --green: #42b983;
+  --clr-white: #fff;
+  --clr-text-dark: #444;
+  --clr-primary: #42b983;
+  --clr-primary-darker: #3aa172;
+  --clr-primary-boxshadow: rgba(66, 185, 131 , 0.3);
+  --clr-secondary: #438aba;
+  --clr-danger: #ca1551;
+  --clr-border: #ced4da;
+  --clr-border-lighter: #f3f3f3;
+  --clr-border-darker: #999;
+  --clr-input-boxshadow: rgba(206, 212, 218, 0.5);
 }
 
 #app {
   font-family: 'Roboto', sans-serif;
-  color: #444;
+  color: var(--clr-text-dark);
   margin-top: 20px;
-}
-
-h1 {
-  font-size: 44px;
-  font-weight: bold;
-}
-
-h2 {
-  font-size: 36px;
-  font-weight: bold;
-}
-
-h3 {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-h4 {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-h5 {
-  font-size: 14px;
-  font-weight: bold;
 }
 
 

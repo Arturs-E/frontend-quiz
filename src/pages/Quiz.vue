@@ -1,12 +1,12 @@
 <template>
-  <div class="content-container">
-    <div class="content-wrapper">
+  <div class="quiz-container">
+    <div class="quiz-wrapper">
       <QuizForm v-if="activeView === 'homepage'" @onSubmit="setFormValues" />
       <QuizTest
         v-else-if="activeView === 'quiz'"
         :quizId="formValues.quizId"
         @onSubmitAnswerHandler="saveQuestionAnswer"
-        @onLastQuestion="goToResults"
+        @onLastQuestion="goToView('results')"
       />
       <QuizResults
         v-else
@@ -26,12 +26,14 @@ import QuizForm, { FormValues } from "@/views/quiz-form/QuizForm.vue";
 import QuizResults from "@/views/quiz-results/QuizResults.vue";
 import QuizTest from "@/views/quiz-test/QuizTest.vue";
 
-axios.defaults.baseURL = "https://printful.com/test-quiz.php";
+axios.defaults.baseURL = "https://printful.com";
 
 export type Quiz = {
   id: string;
   title: string;
 };
+
+type ActiveView = "homepage" | "quiz" | "results";
 
 export default defineComponent({
   name: "Quiz",
@@ -41,32 +43,32 @@ export default defineComponent({
     QuizResults,
   },
   data: () => ({
-    activeView: "homepage" as "homepage" | "quiz" | "results",
+    activeView: "homepage" as ActiveView,
     formValues: {} as FormValues,
     questionAnswers: [] as string[],
   }),
   methods: {
-    setFormValues(values: FormValues) {
+    setFormValues({ name, quizId }: FormValues) {
       this.formValues = {
-        name: values.name.toLowerCase(),
-        quizId: values.quizId,
+        name: name.toLowerCase(),
+        quizId,
       };
-      this.activeView = "quiz";
+      this.goToView("quiz");
     },
     saveQuestionAnswer(value: string) {
       this.questionAnswers.push(value);
     },
-    goToResults() {
-      this.activeView = "results";
+    goToView(view: ActiveView) {
+      this.activeView = view;
     },
     retakeQuiz() {
-      this.activeView = "homepage";
+      this.goToView("homepage");
       this.questionAnswers = [];
     },
   },
 });
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 @import "./Quiz";
 </style>

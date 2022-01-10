@@ -1,23 +1,19 @@
 <template>
   <div class="form-wrapper">
-    <h1 class="quiz-form-heading">Technical task - Quiz</h1>
+    <Heading1 class="quiz-form-heading">Technical task - Quiz</Heading1>
     <form class="form" novalidate @submit.prevent="submitForm">
       <div class="form__fields-wrapper">
         <div class="form__field-wrapper">
-          <label for="name" class="form__label">Name</label>
-          <input
-            type="text"
-            class="form__input"
-            :class="
-              v$.$dirty &&
-              (v$.formValues.name.$error
-                ? 'form__input--invalid'
-                : 'form__input--valid')
+          <TextInput
+            @update:modelValue="formValues.name = $event"
+            :id="'name'"
+            :value="formValues.name"
+            :validation-error="
+              v$.$dirty && (v$.formValues.name.$error ? 'invalid' : 'valid')
             "
-            id="name"
-            placeholder="Please enter your name"
-            ref="nameRef"
-            v-model.trim="formValues.name"
+            :placeholder="'Please enter your name'"
+            :label="'Name'"
+            :focused="true"
           />
           <div class="form__input-feedback">
             <div v-if="v$.formValues.name.$error" class="form__error-message">
@@ -27,32 +23,17 @@
         </div>
         <FetchingError v-if="fetchingError" />
         <div v-else class="form__field-wrapper">
-          <label for="test" class="form__label">Test</label>
-          <div class="form__select-wrapper">
-            <select
-              class="form__input form__select"
-              :class="
-                v$.$dirty &&
-                (v$.formValues.quizId.$error
-                  ? 'form__input--invalid'
-                  : 'form__input--valid')
-              "
-              id="test"
-              v-model="formValues.quizId"
-            >
-              <option value="" selected hidden disabled>
-                Please choose test
-              </option>
-              <option
-                v-for="option of selectOptions"
-                :value="option.id"
-                :key="option.id"
-              >
-                {{ option.title }}
-              </option>
-            </select>
-            <span class="form__select-icon"></span>
-          </div>
+          <Select
+            @update:modelValue="formValues.quizId = $event"
+            :id="'test'"
+            :value="formValues.quizId"
+            :select-options="selectOptions"
+            :validation-error="
+              v$.$dirty && (v$.formValues.quizId.$error ? 'invalid' : 'valid')
+            "
+            :placeholder="'Please choose test'"
+            :label="'Test'"
+          />
           <div class="form__input-feedback">
             <div v-if="v$.formValues.quizId.$error" class="form__error-message">
               {{ v$.formValues.quizId.$errors[0].$message }}
@@ -61,7 +42,7 @@
         </div>
       </div>
       <div class="form__submit-wrapper">
-        <Button additional-class="primary">Start</Button>
+        <Button variant="primary">Start</Button>
       </div>
     </form>
   </div>
@@ -75,6 +56,9 @@ import { required } from "@vuelidate/validators";
 import { Quiz } from "@/pages/Quiz.vue";
 import Button from "@/components/buttons/Button.vue";
 import FetchingError from "@/components/fetching-error/FetchingError.vue";
+import Heading1 from "@/components/headings/Heading1.vue";
+import TextInput from "@/components/form/text-input/TextInput.vue";
+import Select from "@/components/form/select/Select.vue";
 
 export type FormValues = {
   name: string;
@@ -86,6 +70,9 @@ export default defineComponent({
   components: {
     Button,
     FetchingError,
+    Heading1,
+    TextInput,
+    Select,
   },
   data: () => ({
     v$: useVuelidate(),
@@ -100,7 +87,7 @@ export default defineComponent({
   emits: ["onSubmit"],
   created() {
     axios
-      .get("", {
+      .get("/test-quiz.php", {
         params: {
           action: "quizzes",
         },
@@ -114,10 +101,6 @@ export default defineComponent({
           this.fetchingError = true;
         }
       });
-  },
-  mounted() {
-    const inputField = this.$refs.nameRef as HTMLInputElement;
-    inputField.focus();
   },
   methods: {
     submitForm() {
@@ -133,17 +116,16 @@ export default defineComponent({
       };
     },
   },
-  validations() {
-    return {
-      formValues: {
-        name: { required },
-        quizId: { required },
-      },
-    };
+  validations: {
+    formValues: {
+      name: { required },
+      quizId: { required },
+    },
   },
 });
 </script>
 
 <style lang="scss">
 @import "QuizForm";
+@import "../../components/form/FormStyles";
 </style>

@@ -6,8 +6,8 @@
 }
 
 .loader {
-  border: 8px solid #f3f3f3;
-  border-top: 8px solid var(--green);
+  border: 8px solid var(--clr-border-lighter);
+  border-top: 8px solid var(--clr-primary);
   border-radius: 50%;
   width: 60px;
   height: 60px;

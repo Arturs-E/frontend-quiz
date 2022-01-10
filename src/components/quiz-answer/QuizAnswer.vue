@@ -1,11 +1,10 @@
 <template>
-  <label :for="id">
+  <label>
     <input
       type="radio"
       name="answers"
       class="quiz__answer-input"
       ref="inputRef"
-      :id="id"
       :value="id"
       @change="$emit('update:modelValue', $event.target.value)"
     />

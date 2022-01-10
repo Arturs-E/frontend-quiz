@@ -3,31 +3,31 @@
   justify-content: center;
   align-items: center;
   padding: 6px 18px;
-  border: 1px solid #999;
+  border: 1px solid var(--clr-border-darker);
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.15s;
 
   &:active {
-    box-shadow: #42B9834D 0 0 0 3px;
+    box-shadow: var(--clr-primary-boxshadow) 0 0 0 3px;
   }
 
   &--primary {
-    background-color: var(--green);
-    color: #fff;
+    background-color: var(--clr-primary);
+    color: var(--clr-white);
     border: 1px solid transparent;
 
     &:hover {
-      background-color: #3aa172;
+      background-color: var(--clr-primary-darker);
     }
   }
 
-  &--disabled {
+  &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 
     &:hover {
-      background-color: var(--green);
+      background-color: var(--clr-primary);
     }
   }
 }

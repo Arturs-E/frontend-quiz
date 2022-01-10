@@ -1,3 +1,7 @@
+.progress-bar-heading-wrapper {
+  margin-bottom: 4px;
+}
+
 .progress-bar-outer {
   width: 100%;
   border-radius: 4px;
@@ -8,8 +12,8 @@
   font-size: 14px;
   padding: 2px;
   border-radius: 4px;
-  background-color: #04AA6D;
+  background-color: var(--clr-primary);
   text-align: center;
-  color: #fff;
+  color: var(--clr-white);
   transition: width 1s ease-in-out;
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="quiz-question">{{ getQuestion() }}</h3>
+    <Heading3 class="quiz-question">{{ getQuestion() }}</Heading3>
     <form @submit.prevent="submitAnswer" class="quiz">
       <div class="answer-container-wrapper">
         <FetchingError v-if="fetchingError" />
@@ -15,7 +15,7 @@
           />
         </div>
       </div>
-      <Button additional-class="primary" :disabled="!selectedAnswer">
+      <Button variant="primary" :disabled="!selectedAnswer">
         {{ checkIfLastQuestion() ? "Submit" : "Next question" }}
       </Button>
     </form>
@@ -36,6 +36,7 @@ import Button from "@/components/buttons/Button.vue";
 import ProgressBar from "@/components/progress-bar/ProgressBar.vue";
 import Loader from "@/components/loader/Loader.vue";
 import FetchingError from "@/components/fetching-error/FetchingError.vue";
+import Heading3 from "@/components/headings/Heading3.vue";
 
 export default defineComponent({
   name: "QuizTest",
@@ -45,6 +46,7 @@ export default defineComponent({
     ProgressBar,
     Loader,
     FetchingError,
+    Heading3,
   },
   props: ["quizId"],
   emits: ["onSubmitAnswerHandler", "onLastQuestion"],
@@ -58,7 +60,7 @@ export default defineComponent({
   }),
   async created() {
     await axios
-      .get("", {
+      .get("/test-quiz.php", {
         params: {
           action: "questions",
           quizId: this.quizId,
@@ -96,7 +98,7 @@ export default defineComponent({
     getAnswers() {
       const questionId = this.quizQuestions[this.activeQuestionIndex].id;
       axios
-        .get("", {
+        .get("/test-quiz.php", {
           params: {
             action: "answers",
             quizId: this.quizId,

@@ -2,15 +2,12 @@
   <FetchingError v-if="fetchingError" />
   <Loader v-else-if="loading" />
   <div v-else class="results">
-    <h2 style="text-transform: capitalize">
-      {{ `Thanks, ${formValues.name}!` }}
-    </h2>
+    <Heading2 variant="capitalized"> Thanks, {{ formValues.name }}! </Heading2>
     <span class="results__text">
-      {{
-        `You answered correctly to ${quizResults.correct} out of ${quizResults.total} questions.`
-      }}
+      You answered correctly to {{ quizResults.correct }} out of
+      {{ quizResults.total }} questions.
     </span>
-    <Button additional-class="primary" @button:on-click="this.$emit('onClick')">
+    <Button variant="primary" @button:on-click="this.$emit('onClick')">
       Re-take quiz
     </Button>
   </div>
@@ -23,6 +20,7 @@ import Button from "@/components/buttons/Button.vue";
 import { FormValues } from "@/views/quiz-form/QuizForm.vue";
 import Loader from "@/components/loader/Loader.vue";
 import FetchingError from "@/components/fetching-error/FetchingError.vue";
+import Heading2 from "@/components/headings/Heading2.vue";
 
 type QuizResults = {
   correct: number;
@@ -35,6 +33,7 @@ export default defineComponent({
     Button,
     Loader,
     FetchingError,
+    Heading2,
   },
   emits: ["onClick"],
   props: {
@@ -54,7 +53,7 @@ export default defineComponent({
   }),
   created() {
     axios
-      .get("", {
+      .get("/test-quiz.php", {
         params: {
           action: "submit",
           quizId: this.formValues.quizId,

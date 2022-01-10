@@ -3,8 +3,8 @@
     display: none;
 
     &:checked + .quiz__answer-label {
-      color: #fff;
-      background-color: var(--green);
+      color: var(--clr-white);
+      background-color: var(--clr-primary);
     }
   }
 
@@ -15,8 +15,8 @@
     padding: 14px 40px;
     font-size: 18px;
     font-weight: 600;
-    color: #fff;
-    background-color: var(--blue);
+    color: var(--clr-white);
+    background-color: var(--clr-secondary);
     border-radius: 4px;
     cursor: pointer;
   }

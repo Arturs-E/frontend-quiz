@@ -1,10 +1,10 @@
 # Technical task - Quiz
 
-You can view the full assignment [HERE](./Front-end_Developer_Technical_task.pdf)
+You can view the full assignment [HERE](public/for-readme/Front-end_Developer_Technical_task.pdf)
 
 You can see a working project here - https://arturs-e.github.io/frontend-quiz/
 
-![Project GIF](./frontend-quiz.gif)
+![Project GIF](public/for-readme/frontend-quiz.gif)
 
 ## Project architecture
 
