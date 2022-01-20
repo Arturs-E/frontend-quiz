@@ -9,17 +9,26 @@
     padding: 6px 12px;
     border: 1px solid var(--clr-border);
     border-radius: 4px;
+    width: 100%;
 
     &:focus, &:focus-visible {
-      box-shadow: var(--clr-input-boxshadow) 0 0 0 2px;
+      box-shadow: var(--clr-secondary-boxshadow) 0 0 0 2px;
     }
 
     &--valid {
       border: 1px solid var(--clr-primary);
+
+      &:focus, &:focus-visible {
+        box-shadow: var(--clr-primary-boxshadow) 0 0 0 2px;
+      }
     }
 
     &--invalid {
       border: 1px solid var(--clr-danger);
+
+      &:focus, &:focus-visible {
+        box-shadow: var(--clr-danger-boxshadow) 0 0 0 2px;
+      }
     }
   }
 
@@ -41,6 +50,30 @@
     border-top: 1px solid var(--clr-border-darker);
     border-left: 1px solid #999;
     transform: rotate(225deg);
+  }
+
+  &__input-validation-icon {
+    position: absolute;
+    top: 9px;
+    right: 14px;
+
+    &--valid {
+      color: var(--clr-primary);
+    }
+
+    &--invalid {
+      color: var(--clr-danger);
+    }
+
+    &--valid-select {
+      color: var(--clr-primary);
+      right: 34px;
+    }
+
+    &--invalid-select {
+      color: var(--clr-danger);
+      right: 34px;
+    }
   }
 
 }

@@ -8,7 +8,9 @@
   --clr-primary-darker: #3aa172;
   --clr-primary-boxshadow: rgba(66, 185, 131 , 0.3);
   --clr-secondary: #438aba;
+  --clr-secondary-boxshadow: rgba(67, 138, 186, 0.3);
   --clr-danger: #ca1551;
+  --clr-danger-boxshadow: rgba(202, 21, 81, 0.3);
   --clr-border: #ced4da;
   --clr-border-lighter: #f3f3f3;
   --clr-border-darker: #999;
@@ -17,6 +19,8 @@
 
 #app {
   font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   color: var(--clr-text-dark);
   margin-top: 20px;
 }

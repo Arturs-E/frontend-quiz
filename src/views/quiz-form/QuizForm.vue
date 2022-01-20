@@ -7,7 +7,7 @@
           <TextInput
             @update:modelValue="formValues.name = $event"
             :id="'name'"
-            :value="formValues.name"
+            :model-value="formValues.name"
             :validation-error="
               v$.$dirty && (v$.formValues.name.$error ? 'invalid' : 'valid')
             "
@@ -26,7 +26,7 @@
           <Select
             @update:modelValue="formValues.quizId = $event"
             :id="'test'"
-            :value="formValues.quizId"
+            :model-value="formValues.quizId"
             :select-options="selectOptions"
             :validation-error="
               v$.$dirty && (v$.formValues.quizId.$error ? 'invalid' : 'valid')
@@ -52,13 +52,13 @@
 import { defineComponent } from "vue";
 import axios from "axios";
 import useVuelidate from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
+import { helpers, required } from "@vuelidate/validators";
 import { Quiz } from "@/pages/Quiz.vue";
 import Button from "@/components/buttons/Button.vue";
 import FetchingError from "@/components/fetching-error/FetchingError.vue";
 import Heading1 from "@/components/headings/Heading1.vue";
-import TextInput from "@/components/form/text-input/TextInput.vue";
-import Select from "@/components/form/select/Select.vue";
+import TextInput from "@/components/form/TextInput.vue";
+import Select from "@/components/form/Select.vue";
 
 export type FormValues = {
   name: string;
@@ -118,8 +118,15 @@ export default defineComponent({
   },
   validations: {
     formValues: {
-      name: { required },
-      quizId: { required },
+      name: {
+        required: helpers.withMessage("Please enter your name", required),
+      },
+      quizId: {
+        required: helpers.withMessage(
+          "Please choose one of the test variants",
+          required
+        ),
+      },
     },
   },
 });

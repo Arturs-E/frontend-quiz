@@ -1,26 +1,42 @@
 <template>
   <div class="form__input-wrapper">
     <label :for="id" class="form__label">{{ label }}</label>
-    <input
-      type="text"
-      class="form__input"
-      :class="getValidationClass"
-      :placeholder="placeholder"
-      :id="id"
-      :value="value"
-      @input="$emit('update:modelValue', $event.target.value)"
-      ref="reference"
-    />
+    <div class="form__text-input-wrapper">
+      <input
+        type="text"
+        class="form__input"
+        :class="getValidationClass"
+        :placeholder="placeholder"
+        :id="id"
+        :value="modelValue"
+        @input="$emit('update:modelValue', $event.target.value)"
+        ref="reference"
+      />
+      <font-awesome-icon
+        v-if="validationError === 'valid'"
+        :icon="['fas', 'check-circle']"
+        class="form__input-validation-icon form__input-validation-icon--valid"
+      />
+      <font-awesome-icon
+        v-if="validationError === 'invalid'"
+        :icon="['fas', 'exclamation-circle']"
+        class="form__input-validation-icon form__input-validation-icon--invalid"
+      />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 export default defineComponent({
   name: "TextInput",
+  components: {
+    FontAwesomeIcon,
+  },
   props: {
-    value: String,
+    modelValue: String,
     id: String,
     label: String,
     placeholder: String,
@@ -53,10 +69,15 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@import "../FormStyles";
+@import "FormStyles";
 .form__input-wrapper {
   display: grid;
   grid-template-columns: 1fr;
   row-gap: 4px;
+}
+
+.form__text-input-wrapper {
+  position: relative;
+  width: 100%;
 }
 </style>
